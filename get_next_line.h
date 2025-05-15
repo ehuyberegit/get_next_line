@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehuybere <ehuybere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erwanhuyberechts <erwanhuyberechts@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 11:59:49 by ehuybere          #+#    #+#             */
-/*   Updated: 2025/05/13 14:21:38 by ehuybere         ###   ########.fr       */
+/*   Updated: 2025/05/14 16:24:03 by erwanhuyber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@
 char 	*ft_strchr(char *str, int c);
 int		ft_strlen(char *str);
 char	*ft_strjoin(char *str1, char *str2);
-char	*ft_extract_line(char *str);
+char *ft_strdup(const char *s);
+char	*ft_extract_line(char **remainder);
 char	*get_next_line(int fd);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehuybere <ehuybere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erwanhuyberechts <erwanhuyberechts@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:01:58 by ehuybere          #+#    #+#             */
-/*   Updated: 2025/05/13 15:31:06 by ehuybere         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:40:18 by erwanhuyber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,28 +62,43 @@ int main(void)
 }
 */
 
-int	main(void)
+
+int main(void)
 {
-	char	*str = NULL;
-	int		fd;
-	char	*files[] = {
+	char *line = NULL;
+	int fd;
+	char *files[] = {
 		"secret.txt",
+		"empty.txt",
 		NULL
 	};
-	int		i;
+	int i;
 	
 	i = 0;
-	while(files[i])
+	while (files[i])
 	{
 		fd = open(files[i], O_RDONLY);
-		printf("name of the file read : %s \n", files[i]);
-		while ((str = get_next_line(fd)))
+		if (fd == -1)
 		{
-			printf("Here should appear the next line : %s", str);
-			free(str);
+			printf("Error opening file: %s\n", files[i]);
+			i++;
+			continue;
 		}
+		
+		printf("\n--- Reading file: %s ---\n\n", files[i]);
+		
+		// Get and print each line until NULL is returned
+		while ((line = get_next_line(fd)) != NULL)
+		{
+			printf("Line: %s", line);
+			free(line);
+		}
+		
 		close(fd);
 		i++;
+		printf("\n");
 	}
+	printf("\n");
 	return (0);
 }
+

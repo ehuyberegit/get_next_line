@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehuybere <ehuybere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erwanhuyberechts <erwanhuyberechts@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 11:55:46 by ehuybere          #+#    #+#             */
-/*   Updated: 2025/05/13 15:54:17 by ehuybere         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:33:41 by erwanhuyber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,52 +19,49 @@ char	*get_next_line(int fd)
 	static char	*remainder;
 	char		*buffer;
 	char		*new_line;
-	char		*joined;
+	char		*temp;
 	
-
+	temp = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-
-	//Check if remainder already has a newline if remainder contains '\n'
+		
 	if (remainder && ft_strchr(remainder, '\n'))
 	{
-		// extract line from remainder
-		new_line = ft_extract_line(remainder); 
-		printf("DEBUG: new line after extraction 1: %s\n", new_line);
-		// return new line
+		new_line = ft_extract_line(&remainder); 
+		//printf("DEBUG: new line if the remainder had nl: %s\n", new_line);
 		return (new_line);
 	}
 	
 	buffer = (char *)malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
-	
-	bytes_read = 0;
-	while (!ft_strchr(buffer, '\n') && bytes_read != (-1))
+	bytes_read = 1;
+	while (bytes_read > 0)
 	{
-		// Read a line from a file descriptor (up to a newline character)
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		printf("DEBUG: bytes read: %d\n", bytes_read);
+		//printf("DEBUG: bytes read: %d\n", bytes_read);
 		if (bytes_read <= 0)
 			break;
-		// If new line not found, add the new buffer to the total read buffer
 		buffer[bytes_read] = '\0';
-		printf("DEBUG: buffer content: '%s'\n", buffer);
-		joined = NULL;
-		joined = ft_strjoin(remainder, buffer);
+		//printf("DEBUG: buffer content: '%s'\n", buffer);
+		temp = ft_strjoin(remainder, buffer);
 		free(remainder);
-		printf("DEBUG: remainder after join: %s\n", joined);
+		remainder = temp;
+		//printf("DEBUG: remainder after join: %s\n", joined);
 		if (ft_strchr(remainder, '\n'))
 			break;
 	}
-	new_line = ft_extract_line(remainder);
-	printf("DEBUG: new line after extraction 2: %s\n", new_line);
-	if (ft_strchr(buffer, '\n') || EOF)
+	free(buffer);
+
+	
+	if ((!remainder || remainder[0] == '\0') && bytes_read <= 0)
 	{
 		free (remainder);
-		free(buffer);
+		remainder = NULL;
 		return (NULL);
-	} 
-	remainder = NULL;
+	}
+	
+	new_line = ft_extract_line(&remainder);
+	
 	return (new_line);
 }

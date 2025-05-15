@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ehuybere <ehuybere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: erwanhuyberechts <erwanhuyberechts@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 11:59:29 by ehuybere          #+#    #+#             */
-/*   Updated: 2025/05/13 15:53:40 by ehuybere         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:37:23 by erwanhuyber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,34 +76,69 @@ char	*ft_strjoin(char *str1, char *str2)
 	joined[i] = '\0';
 	return (joined);
 }
+char *ft_strdup(const char *s)
+{
+    char *dup;
+    int len;
+    int i;
 
-char	*ft_extract_line(char *remainder)
+    if (!s)
+        return (NULL);
+    
+    len = ft_strlen((char *)s);
+    dup = (char *)malloc(len + 1);
+    if (!dup)
+        return (NULL);
+    
+    i = 0;
+    while (s[i])
+    {
+        dup[i] = s[i];
+        i++;
+    }
+    dup[i] = '\0';
+    
+    return (dup);
+}
+
+char	*ft_extract_line(char **remainder)
 {
 	int		i;
 	int		len;
 	char	*line;
+	char    *new_remainder;
 	
-	len = 0;
-	if (!remainder)
+	if (!*remainder)
 		return (NULL);
-	while (remainder[len] != '\n' && remainder[len])
+
+	len = 0;
+	while ((*remainder)[len] != '\n' && (*remainder)[len])
 		len++;
-	if (remainder[len] == '\n')
+	
+	if ((*remainder)[len] == '\n')
 		line = (char *)malloc(len + 2);
 	else
 		line = (char *)malloc(len + 1);
+	if (!line)
+        return (NULL);
+
 	i = 0;
 	while (i < len)
 	{
-		line[i] = remainder[i];
+		line[i] = (*remainder)[i];
 		i++;
 	}
-	if (remainder[len] == '\n')
+	if ((*remainder)[len] == '\n')
 	{
 		line[i] = '\n';
 		i++;
 	}
 	line[i] = '\0';
-	*remainder += len;
+	if ((*remainder)[len] == '\n')
+		new_remainder = ft_strdup(&(*remainder)[len+1]);
+	else
+		new_remainder = NULL;
+	free(*remainder);
+	*remainder = new_remainder;
 	return (line);
 }
