@@ -3,21 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erwanhuyberechts <erwanhuyberechts@stud    +#+  +:+       +#+        */
+/*   By: ehuybere <ehuybere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 11:55:46 by ehuybere          #+#    #+#             */
-/*   Updated: 2025/05/15 11:35:07 by erwanhuyber      ###   ########.fr       */
+/*   Updated: 2025/05/15 17:13:53 by ehuybere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-// gcc -Wall -Wextra -Werror -g get_next_line.c get_next_line_utils.c main.c -o get_next_line_debug
 
 char	*ft_extract_line_2(char **remainder, int len, char *line)
 {
 	int		i;
-	char    *new_remainder;
-	
+	char	*new_remainder;
+
 	i = 0;
 	while (i < len)
 	{
@@ -30,8 +29,8 @@ char	*ft_extract_line_2(char **remainder, int len, char *line)
 		i++;
 	}
 	line[i] = '\0';
-	if ((*remainder)[len] == '\n')
-		new_remainder = ft_strdup(&((*remainder)[len+1]));
+	if ((*remainder)[len] == '\n' && (*remainder)[len + 1] != '\0')
+		new_remainder = ft_strdup(&((*remainder)[len + 1]));
 	else
 		new_remainder = NULL;
 	free(*remainder);
@@ -44,19 +43,18 @@ char	*ft_extract_line(char **remainder)
 	int		len;
 	char	*line;
 	char	*extracted_line;
-	
-	if (!(*remainder))
+
+	if (!(*remainder) || !remainder)
 		return (NULL);
 	len = 0;
 	while ((*remainder)[len] != '\n' && (*remainder)[len])
 		len++;
-	
 	if ((*remainder)[len] == '\n')
 		line = (char *)malloc(len + 2);
 	else
 		line = (char *)malloc(len + 1);
 	if (!line)
-        return (NULL);
+		return (NULL);
 	extracted_line = ft_extract_line_2(remainder, len, line);
 	return (extracted_line);
 }
@@ -65,20 +63,23 @@ int	ft_read(int fd, char *buffer, char **remainder)
 {
 	char		*temp;
 	int			bytes_read;
-	
+
 	temp = NULL;
 	bytes_read = 1;
 	while (bytes_read > 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read <= 0)
-			break;
+		if (bytes_read < 0)
+			return (-1);
+		if (bytes_read == 0)
+			break ;
 		buffer[bytes_read] = '\0';
 		temp = ft_strjoin(*remainder, buffer);
-		free(*remainder);
+		if (*remainder)
+			free(*remainder);
 		*remainder = temp;
 		if (ft_strchr(*remainder, '\n'))
-			break;
+			break ;
 	}
 	free(buffer);
 	return (bytes_read);
@@ -95,7 +96,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	if (remainder && ft_strchr(remainder, '\n'))
 	{
-		new_line = ft_extract_line(&remainder); 
+		new_line = ft_extract_line(&remainder);
 		return (new_line);
 	}
 	buffer = (char *)malloc(BUFFER_SIZE + 1);
@@ -111,4 +112,3 @@ char	*get_next_line(int fd)
 	new_line = ft_extract_line(&remainder);
 	return (new_line);
 }
-

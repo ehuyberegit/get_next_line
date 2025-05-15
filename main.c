@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erwanhuyberechts <erwanhuyberechts@stud    +#+  +:+       +#+        */
+/*   By: ehuybere <ehuybere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:01:58 by ehuybere          #+#    #+#             */
-/*   Updated: 2025/05/14 17:40:18 by erwanhuyber      ###   ########.fr       */
+/*   Updated: 2025/05/15 17:04:55 by ehuybere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ int main(void)
 }
 */
 
-
 int main(void)
 {
 	char *line = NULL;
@@ -101,4 +100,3 @@ int main(void)
 	printf("\n");
 	return (0);
 }
-
