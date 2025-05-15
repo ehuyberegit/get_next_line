@@ -6,7 +6,7 @@
 /*   By: erwanhuyberechts <erwanhuyberechts@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 11:59:29 by ehuybere          #+#    #+#             */
-/*   Updated: 2025/05/14 17:37:23 by erwanhuyber      ###   ########.fr       */
+/*   Updated: 2025/05/15 10:27:48 by erwanhuyber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,10 @@ char *ft_strdup(const char *s)
 
     if (!s)
         return (NULL);
-    
     len = ft_strlen((char *)s);
     dup = (char *)malloc(len + 1);
     if (!dup)
         return (NULL);
-    
     i = 0;
     while (s[i])
     {
@@ -97,48 +95,5 @@ char *ft_strdup(const char *s)
         i++;
     }
     dup[i] = '\0';
-    
     return (dup);
-}
-
-char	*ft_extract_line(char **remainder)
-{
-	int		i;
-	int		len;
-	char	*line;
-	char    *new_remainder;
-	
-	if (!*remainder)
-		return (NULL);
-
-	len = 0;
-	while ((*remainder)[len] != '\n' && (*remainder)[len])
-		len++;
-	
-	if ((*remainder)[len] == '\n')
-		line = (char *)malloc(len + 2);
-	else
-		line = (char *)malloc(len + 1);
-	if (!line)
-        return (NULL);
-
-	i = 0;
-	while (i < len)
-	{
-		line[i] = (*remainder)[i];
-		i++;
-	}
-	if ((*remainder)[len] == '\n')
-	{
-		line[i] = '\n';
-		i++;
-	}
-	line[i] = '\0';
-	if ((*remainder)[len] == '\n')
-		new_remainder = ft_strdup(&(*remainder)[len+1]);
-	else
-		new_remainder = NULL;
-	free(*remainder);
-	*remainder = new_remainder;
-	return (line);
 }
