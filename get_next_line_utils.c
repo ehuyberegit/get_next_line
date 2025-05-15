@@ -6,7 +6,7 @@
 /*   By: erwanhuyberechts <erwanhuyberechts@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 11:59:29 by ehuybere          #+#    #+#             */
-/*   Updated: 2025/05/15 10:27:48 by erwanhuyber      ###   ########.fr       */
+/*   Updated: 2025/05/15 12:30:23 by erwanhuyber      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,11 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_strjoin(char *str1, char *str2)
+char	*ft_strcpy(char *str1, char *str2, char *joined, int len_str1)
 {
-	int		len_str1;
-	int		len_str2;
-	char	*joined;
 	int		i;
 	int		j;
-
-	if (!str1)
-		len_str1 = 0;
-	if (!str2)
-		len_str2 = 0;	
-	len_str1 = ft_strlen(str1);
-	len_str2 = ft_strlen(str2);
-	joined = (char *)malloc(len_str1 + len_str2 + 1);
-	if (!joined)
-		return (NULL);
+	
 	i = 0;
 	if (len_str1 != 0)
 	{
@@ -74,6 +62,25 @@ char	*ft_strjoin(char *str1, char *str2)
 	while (str2[j])
 		joined[i++] = str2[j++];
 	joined[i] = '\0';
+	return (joined);
+}
+
+char	*ft_strjoin(char *str1, char *str2)
+{
+	int		len_str1;
+	int		len_str2;
+	char	*joined;
+
+	if (!str1)
+		len_str1 = 0;
+	if (!str2)
+		len_str2 = 0;	
+	len_str1 = ft_strlen(str1);
+	len_str2 = ft_strlen(str2);
+	joined = (char *)malloc(len_str1 + len_str2 + 1);
+	if (!joined)
+		return (NULL);
+	joined = ft_strcpy(str1, str2, joined, len_str1);
 	return (joined);
 }
 char *ft_strdup(const char *s)
